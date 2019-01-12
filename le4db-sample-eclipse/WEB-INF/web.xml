@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+  "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+  <servlet>
+    <servlet-name>Home</servlet-name>
+    <servlet-class>HomeServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Search</servlet-name>
+    <servlet-class>SearchServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Add</servlet-name>
+    <servlet-class>AddServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Item</servlet-name>
+    <servlet-class>ItemServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Update</servlet-name>
+    <servlet-class>UpdateServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Delete</servlet-name>
+    <servlet-class>DeleteServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Login</servlet-name>
+  	<servlet-class>LoginServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>LoginCheck</servlet-name>
+  	<servlet-class>LoginCheckServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>Logout</servlet-name>
+  	<servlet-class>LogoutServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>LoginList</servlet-name>
+  	<servlet-class>LoginListServlet</servlet-class>
+  </servlet>
+  
+  <filter>
+  	<filter-name>AuthFilter</filter-name>
+  	<filter-class>AuthFilter</filter-class>
+  </filter>
+  
+  <servlet>
+  	<servlet-name>MovieList</servlet-name>
+  	<servlet-class>MovieListServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Home</servlet-name>
+    <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>Search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Add</servlet-name>
+    <url-pattern>/add</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Item</servlet-name>
+    <url-pattern>/item</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Update</servlet-name>
+    <url-pattern>/update</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Delete</servlet-name>
+    <url-pattern>/delete</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Login</servlet-name>
+  	<url-pattern>/auth/login</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>LoginCheck</servlet-name>
+  	<url-pattern>/auth/logincheck</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>Logout</servlet-name>
+  	<url-pattern>/auth/logout</url-pattern>
+  </servlet-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/mlist</url-pattern>
+  </filter-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>LoginList</servlet-name>
+  	<url-pattern>/llist</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>MovieList</servlet-name>
+  	<url-pattern>/mlist</url-pattern>
+  </servlet-mapping>
+
+</web-app>

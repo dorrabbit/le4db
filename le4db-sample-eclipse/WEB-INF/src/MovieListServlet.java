@@ -90,7 +90,7 @@ public class MovieListServlet extends HttpServlet {
 				String chname = rs.getString("chname");
 
 				out.println("<tr>");
-				out.println("<td><!--<a href=\"item?pid=" + mtitle + "\">-->" + mtitle + "</td>");
+				out.println("<td><a href=\"item?mtitle=" + mtitle + "\">" + mtitle + "</td>");
 				out.println("<td>" + performer + "</td>");
 				out.println("<td>" + update + "</td>");
 				out.println("<td>" + viewcount + "</td>");
@@ -113,6 +113,108 @@ public class MovieListServlet extends HttpServlet {
 			}
 		}
 
+		out.println("<h3>追加</h3>");
+
+		out.println("<form action=\"/add\" method=\"GET\">");
+		out.println("動画タイトル　： ");
+		out.println("<input type=\"text\" name=\"new_mtitle\"/>");
+		out.println("<br/>");
+		out.println("出演者　　　　： ");
+		out.println("<input type=\"text\" name=\"new_performer\"/>");
+		out.println("<br/>");
+		out.println("投稿日　　　　： ");
+		out.println("<select name=\"new_update_y\">" +
+					"<option value=\"2000\">2000</option>\r\n" + 
+					"<option value=\"2001\">2001</option>\r\n" + 
+					"<option value=\"2002\">2002</option>\r\n" + 
+					"<option value=\"2003\">2003</option>\r\n" + 
+					"<option value=\"2004\">2004</option>\r\n" + 
+					"<option value=\"2005\">2005</option>\r\n" + 
+					"<option value=\"2006\">2006</option>\r\n" + 
+					"<option value=\"2007\">2007</option>\r\n" + 
+					"<option value=\"2008\">2008</option>\r\n" + 
+					"<option value=\"2009\">2009</option>\r\n" + 
+					"<option value=\"2010\">2010</option>\r\n" + 
+					"<option value=\"2011\">2011</option>\r\n" + 
+					"<option value=\"2012\">2012</option>\r\n" + 
+					"<option value=\"2013\">2013</option>\r\n" + 
+					"<option value=\"2014\">2014</option>\r\n" + 
+					"<option value=\"2015\">2015</option>\r\n" + 
+					"<option value=\"2016\">2016</option>\r\n" + 
+					"<option value=\"2017\">2017</option>\r\n" + 
+					"<option value=\"2018\">2018</option>\r\n" + 
+					"<option value=\"2019\">2019</option>\r\n" + 
+					"<option value=\"2020\">2020</option>\r\n" + 
+					"<option value=\"2021\">2021</option>\r\n" + 
+					"<option value=\"2022\">2022</option>\r\n" + 
+					"<option value=\"2023\">2023</option>\r\n" + 
+					"<option value=\"2024\">2024</option>\r\n" + 
+					"<option value=\"2025\">2025</option>\r\n" + 
+					"<option value=\"2026\">2026</option>\r\n" + 
+					"<option value=\"2027\">2027</option>\r\n" + 
+					"<option value=\"2028\">2028</option>\r\n" + 
+					"<option value=\"2029\">2029</option>\r\n" + 
+					"<option value=\"2030\">2030</option>\r\n" + 
+					"</select>年");
+		out.println("<select name=\"new_update_m\">" +
+					"<option value=\"01\">1</option>\r\n" + 
+					"<option value=\"02\">2</option>\r\n" + 
+					"<option value=\"03\">3</option>\r\n" + 
+					"<option value=\"04\">4</option>\r\n" + 
+					"<option value=\"05\">5</option>\r\n" + 
+					"<option value=\"06\">6</option>\r\n" + 
+					"<option value=\"07\">7</option>\r\n" + 
+					"<option value=\"08\">8</option>\r\n" + 
+					"<option value=\"09\">9</option>\r\n" + 
+					"<option value=\"10\">10</option>\r\n" + 
+					"<option value=\"11\">11</option>\r\n" + 
+					"<option value=\"12\">12</option>\r\n" + 
+					"</select>月");
+		out.println("<select name=\"new_update_d\">" + 
+					"<option value=\"01\">1</option>\r\n" + 
+					"<option value=\"02\">2</option>\r\n" + 
+					"<option value=\"03\">3</option>\r\n" + 
+					"<option value=\"04\">4</option>\r\n" + 
+					"<option value=\"05\">5</option>\r\n" + 
+					"<option value=\"06\">6</option>\r\n" + 
+					"<option value=\"07\">7</option>\r\n" + 
+					"<option value=\"08\">8</option>\r\n" + 
+					"<option value=\"09\">9</option>\r\n" + 
+					"<option value=\"10\">10</option>\r\n" + 
+					"<option value=\"11\">11</option>\r\n" + 
+					"<option value=\"12\">12</option>\r\n" + 
+					"<option value=\"13\">13</option>\r\n" + 
+					"<option value=\"14\">14</option>\r\n" + 
+					"<option value=\"15\">15</option>\r\n" + 
+					"<option value=\"16\">16</option>\r\n" + 
+					"<option value=\"17\">17</option>\r\n" + 
+					"<option value=\"18\">18</option>\r\n" + 
+					"<option value=\"19\">19</option>\r\n" + 
+					"<option value=\"20\">20</option>\r\n" + 
+					"<option value=\"21\">21</option>\r\n" + 
+					"<option value=\"22\">22</option>\r\n" + 
+					"<option value=\"23\">23</option>\r\n" + 
+					"<option value=\"24\">24</option>\r\n" + 
+					"<option value=\"25\">25</option>\r\n" + 
+					"<option value=\"26\">26</option>\r\n" + 
+					"<option value=\"27\">27</option>\r\n" + 
+					"<option value=\"28\">28</option>\r\n" + 
+					"<option value=\"29\">29</option>\r\n" + 
+					"<option value=\"30\">30</option>\r\n" + 
+					"<option value=\"31\">31</option>\r\n" + 
+					"</select>日");
+		out.println("<br/>");
+		out.println("視聴数　　　　： ");
+		out.println("<input type=\"text\" name=\"new_viewcount\"/>");
+		out.println("<br/>");
+		out.println("投稿チャンネル： ");
+		out.println("<input type=\"text\" name=\"new_chname\"/>");
+		out.println("<br/>");
+		out.println("<br/>");
+		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"submit\" value=\"登録 \">");
+		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"reset\" value=\"リセット\">");
+		out.println("</form>");
+		
 		out.println("</body>");
 		out.println("</html>");
 	}

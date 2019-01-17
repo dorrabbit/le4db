@@ -115,6 +115,11 @@
   	<url-pattern>/mlist</url-pattern>
   </filter-mapping>
   
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/add</url-pattern>
+  </filter-mapping>
+  
   <servlet-mapping>
   	<servlet-name>LoginList</servlet-name>
   	<url-pattern>/llist</url-pattern>

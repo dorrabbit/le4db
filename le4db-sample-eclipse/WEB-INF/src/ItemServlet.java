@@ -6,12 +6,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
 public class ItemServlet extends HttpServlet {
@@ -41,15 +43,35 @@ public class ItemServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+		//テンプレ
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		
-		String pid = request.getParameter("pid");
-
+		out.println("<link rel=\"stylesheet\" href=\"/uikit.min.css\">");
 		out.println("<html>");
-		out.println("<body>");
+	    out.println("<head>");
+	    out.println("<title>アイテムページ</title>");
+	    out.println("</head>");
+		out.println("<body class=\"uk-background-muted uk-padding\">");
+				
+		out.println("<h1 class=\"uk-text-center\">動画管理システム</h1>");
+		HttpSession session = request.getSession();
+		String uname = (String)session.getAttribute("user");
+		String target = (String)session.getAttribute("target");
+		out.println("<div class=\"login_head uk-text-small uk-text-right\">");
+		out.println(uname + "：ログインしています");
+		out.println("</br><a href=\"/auth/logout\">ログアウト</a>");
+		out.println("</div>");
+		out.println("<nav class=\"uk-navbar-container\" uk-navbar uk-sticky>");
+		out.println("<div>");
+		out.println("<ul class=\"uk-navbar-nav\">");
+		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
+		out.println("<li><a href=\"/mlist\">動画</a></li>");
+		out.println("</ul>");
+		out.println("</div>");
+		out.println("</nav>");
+		
+		String mtitle = request.getParameter("mtitle");
 
-		out.println("<h3>更新</h3>");
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -58,26 +80,41 @@ public class ItemServlet extends HttpServlet {
 					+ ":5432/" + _dbname, _username, _password);
 			stmt = conn.createStatement();
 
-			out.println("<form action=\"update\" method=\"GET\">");
-			out.println("商品ID： " + pid);
-			out.println("<input type=\"hidden\" name=\"update_pid\" + value=\"" + pid + "\"/>");
-			out.println("<br/>");
+			out.println("<h3>アイテム</h3>");
 			
-			ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE pid = " + pid);
+			out.println("<table border=\"1\">");
+			out.println("<tr><th>動画名</th><th>出演者</th><th>日付</th><th>視聴回数</th><th>チャンネル名</th></tr>");
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE mtitle = '" + mtitle + "'");
+
 			while (rs.next()) {
-				String name = rs.getString("name");
-				int price = rs.getInt("price");
+				String performer = rs.getString("performer");
+				Date update = rs.getDate("update");
+				int viewcount = rs.getInt("viewcount");
+				String chname = rs.getString("chname");
+				out.println("<tr>");
+				out.println("<td>" + mtitle + "</td>");
+				out.println("<td>" + performer + "</td>");
+				out.println("<td>" + update + "</td>");
+				out.println("<td>" + viewcount + "</td>");
+				out.println("<td>" + chname + "</td>");
+				out.println("</tr>");
+				out.println("</table>");
 				
-				out.println("商品名： ");
-				out.println("<input type=\"text\" name=\"update_name\" value=\"" + name + "\"/>");
-				out.println("<br/>");
-				out.println("価格： ");
-				out.println("<input type=\"text\" name=\"update_price\" value=\"" + price + "\"/>");
-				out.println("<br/>");
-				
+				out.println("<h3>更新</h3>");
+				out.println("<form action=\"update\" method=\"GET\">");
+				out.println("動画タイトル　：" + mtitle);
+				out.println("<input type=\"hidden\" name=\"update_mtitle\" value=\"" + mtitle + "\"/><br/>");
+				out.println("出演者　　　　：");
+				out.println("<input type=\"text\" name=\"update_performer\" value=\"" + performer + "\"/><br/>");
+				out.println("投稿日　　　　：");
+				out.println("<input type=\"text\" name=\"update_update\" value=\"" + update + "\"/><br/>");
+				out.println("視聴数　　　　：");
+				out.println("<input type=\"text\" name=\"update_viewcount\" value=\"" + viewcount + "\"/><br/>");
+				out.println("投稿チャンネル：");
+				out.println("<input type=\"text\" name=\"update_chname\" value=\"" + chname + "\"/><br/>");
 			}
 			rs.close();
-			
 			out.println("<input type=\"submit\" value=\"更新\"/>");
 			out.println("</form>");
 
@@ -95,12 +132,14 @@ public class ItemServlet extends HttpServlet {
 
 		out.println("<h3>削除</h3>");
 		out.println("<form action=\"delete\" method=\"GET\">");
-		out.println("<input type=\"hidden\" name=\"delete_pid\" value=\"" + pid + "\">");
+		out.println("<input type=\"hidden\" name=\"delete_mtitle\" value=\"" + mtitle + "\">");
 		out.println("<input type=\"submit\" value=\"削除\"/>");
 		out.println("</form>");
 
 		out.println("<br/>");
-		out.println("<a href=\"list\">トップページに戻る</a>");
+		out.println("<a href=" + target + ">遷移元ページに戻る</a><br/>");
+		out.println("<a href=\"/auth/login\">ログインページに戻る</a><br/>");
+		out.println("<a href=\"home\">トップページに戻る</a>");
 
 		out.println("</body>");
 		out.println("</html>");

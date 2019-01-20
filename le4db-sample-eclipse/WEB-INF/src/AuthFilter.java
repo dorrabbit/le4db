@@ -25,7 +25,6 @@ public class AuthFilter implements Filter{
           ((HttpServletResponse)response).sendRedirect("/auth/login");
         }
       }
-
       chain.doFilter(request, response);
     }catch (ServletException se){
     }catch (IOException e){

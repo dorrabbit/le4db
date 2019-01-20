@@ -50,7 +50,8 @@ public class LoginServlet extends HttpServlet {
 	HttpSession session = request.getSession(true);
 	/* 認証失敗から呼び出されたのかどうか */
     Object status = session.getAttribute("status");
-
+    session.setAttribute("target_add", "/auth/login");
+    
     if (status != null){
       out.println("<p class=\"uk-text-danger\">認証に失敗しました</p>");
       out.println("<p class=\"uk-text-danger\">再度ユーザー名とパスワードを入力して下さい</p>");

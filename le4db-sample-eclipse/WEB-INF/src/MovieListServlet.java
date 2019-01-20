@@ -61,11 +61,13 @@ public class MovieListServlet extends HttpServlet {
 		out.println(uname + "：ログインしています");
 		out.println("</br><a href=\"/auth/logout\">ログアウト</a>");
 		out.println("</div>");
+		session.setAttribute("target_add", "/mlist");
 		out.println("<nav class=\"uk-navbar-container\" uk-navbar uk-sticky>");
 		out.println("<div>");
 		out.println("<ul class=\"uk-navbar-nav\">");
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li class=\"uk-active\"><a href=\"/mlist\">動画</a></li>");
+		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -212,6 +214,24 @@ public class MovieListServlet extends HttpServlet {
 		out.println("<br/>");
 		out.println("<br/>");
 		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"submit\" value=\"登録 \">");
+		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"reset\" value=\"リセット\">");
+		out.println("</form>");
+		
+
+		out.println("<h3>検索</h3>");
+
+		out.println("<form action=\"/search\" method=\"GET\">");
+		out.println("動画タイトル： ");
+		out.println("<input type=\"text\" name=\"srch_mtitle\"/>" + "を含む");
+		out.println("<br/>");
+		out.println("出演者　　　： ");
+		out.println("<input type=\"text\" name=\"srch_performer\"/>" + "を含む");
+		out.println("<br/>");
+		out.println("内容　　　　： ");
+		out.println("<input type=\"text\" name=\"srch_contents\"/>" + "を含む");
+		out.println("<br/>");
+		out.println("<br/>");
+		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"submit\" value=\"検索 \">");
 		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"reset\" value=\"リセット\">");
 		out.println("</form>");
 		

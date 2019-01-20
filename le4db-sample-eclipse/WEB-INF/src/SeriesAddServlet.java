@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
-public class UpdateServlet extends HttpServlet {
+public class SeriesAddServlet extends HttpServlet {
 
 	private String _hostname = null;
 	private String _dbname = null;
@@ -47,15 +48,14 @@ public class UpdateServlet extends HttpServlet {
 
 		out.println("<link rel=\"stylesheet\" href=\"/uikit.min.css\">");
 		out.println("<html>");
-		out.println("<head>");
-	    out.println("<title>更新ページ</title>");
+	    out.println("<head>");
+	    out.println("<title>追加ページ</title>");
 	    out.println("</head>");
 		out.println("<body class=\"uk-background-muted uk-padding\">");
 		
 		out.println("<h1 class=\"uk-text-center\">動画管理システム</h1>");
 		HttpSession session = request.getSession();
 		String uname = (String)session.getAttribute("user");
-		String target = (String)session.getAttribute("target");
 		out.println("<div class=\"login_head uk-text-small uk-text-right\">");
 		out.println(uname + "：ログインしています");
 		out.println("</br><a href=\"/auth/logout\">ログアウト</a>");
@@ -65,17 +65,12 @@ public class UpdateServlet extends HttpServlet {
 		out.println("<ul class=\"uk-navbar-nav\">");
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
+		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
-		out.println("<h3>更新</h3>");
+		out.println("<h3>追加</h3>");
 		//
-
-		String update_mtitle = request.getParameter("update_mtitle");
-		String update_performer = request.getParameter("update_performer");
-		String update_update = request.getParameter("update_update");
-		String update_viewcount = request.getParameter("update_viewcount");
-		String update_chname = request.getParameter("update_chname");
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -84,20 +79,22 @@ public class UpdateServlet extends HttpServlet {
 			conn = DriverManager.getConnection("jdbc:postgresql://" + _hostname
 					+ ":5432/" + _dbname, _username, _password);
 			stmt = conn.createStatement();
-
-			stmt.executeUpdate("UPDATE movies SET performer = '" + update_performer
-								+ "', update = '" + update_update
-								+ "', viewcount = " + update_viewcount
-								+ ", chname = '" + update_chname
-								+ "' WHERE mtitle = '" + update_mtitle + "'");
-
-			out.println("以下の動画を更新しました。<br/><br/>");
-			out.println("動画タイトル　：" + update_mtitle + "<br/>");
-			out.println("出演者　　　　：" + update_performer + "<br/>");
-			out.println("投稿日　　　　：" + update_update + "<br/>");
-			out.println("視聴数　　　　：" + update_viewcount + "<br/>");
-			out.println("投稿チャンネル：" + update_chname + "<br/>");
-
+			
+			String new_sname = request.getParameter("new_sname");
+			String new_mtitle = request.getParameter("new_mtitle");
+			stmt.executeUpdate("INSERT INTO classification VALUES('" + new_mtitle + "', '" 
+													  		 		 + new_sname + "')");
+			out.println("以下の動画をシリーズに追加しました。<br/><br/>");
+			out.println("シリーズ名　： " + new_sname + "<br/>");
+			out.println("動画タイトル： " + new_mtitle + "<br/>");
+			
+			out.println("<br/>");
+			
+			out.println("<a href=\"/sitem?sname=" + new_sname + "\">遷移元ページに戻る</a><br/>");	
+			
+			out.println("</body>");
+			out.println("</html>");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -110,8 +107,6 @@ public class UpdateServlet extends HttpServlet {
 			}
 		}
 
-		out.println("</body>");
-		out.println("</html>");
 	}
 
 	protected void doPost(HttpServletRequest request,

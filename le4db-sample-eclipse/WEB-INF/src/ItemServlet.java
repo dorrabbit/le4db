@@ -66,6 +66,7 @@ public class ItemServlet extends HttpServlet {
 		out.println("<ul class=\"uk-navbar-nav\">");
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
+		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -135,11 +136,6 @@ public class ItemServlet extends HttpServlet {
 		out.println("<input type=\"hidden\" name=\"delete_mtitle\" value=\"" + mtitle + "\">");
 		out.println("<input type=\"submit\" value=\"削除\"/>");
 		out.println("</form>");
-
-		out.println("<br/>");
-		out.println("<a href=" + target + ">遷移元ページに戻る</a><br/>");
-		out.println("<a href=\"/auth/login\">ログインページに戻る</a><br/>");
-		out.println("<a href=\"home\">トップページに戻る</a>");
 
 		out.println("</body>");
 		out.println("</html>");

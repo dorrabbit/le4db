@@ -6,12 +6,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
 public class DeleteServlet extends HttpServlet {
@@ -41,13 +43,36 @@ public class DeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+		//テンプレ
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 
-		String deletePID = request.getParameter("delete_pid");
-
+		out.println("<link rel=\"stylesheet\" href=\"/uikit.min.css\">");
 		out.println("<html>");
-		out.println("<body>");
+		out.println("<head>");
+	    out.println("<title>更新ページ</title>");
+	    out.println("</head>");
+		out.println("<body class=\"uk-background-muted uk-padding\">");
+				
+		out.println("<h1 class=\"uk-text-center\">動画管理システム</h1>");
+		HttpSession session = request.getSession();
+		String uname = (String)session.getAttribute("user");
+		String target = (String)session.getAttribute("target");
+		out.println("<div class=\"login_head uk-text-small uk-text-right\">");
+		out.println(uname + "：ログインしています");
+		out.println("</br><a href=\"/auth/logout\">ログアウト</a>");
+		out.println("</div>");
+		out.println("<nav class=\"uk-navbar-container\" uk-navbar uk-sticky>");
+		out.println("<div>");
+		out.println("<ul class=\"uk-navbar-nav\">");
+		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
+		out.println("<li><a href=\"/mlist\">動画</a></li>");
+		out.println("</ul>");
+		out.println("</div>");
+		out.println("</nav>");
+		out.println("<h3>更新</h3>");
+		//
+		String delete_mtitle = request.getParameter("delete_mtitle");
 
 		Connection conn = null;
 		Statement stmt = null;
@@ -56,21 +81,23 @@ public class DeleteServlet extends HttpServlet {
 			conn = DriverManager.getConnection("jdbc:postgresql://" + _hostname
 					+ ":5432/" + _dbname, _username, _password);
 			stmt = conn.createStatement();
-			
-			out.println("以下の商品を削除しました。<br/><br/>");
-			out.println("商品ID: " + deletePID + "<br/>");
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM products WHERE pid = " + deletePID);
+			ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE mtitle = '" + delete_mtitle + "'");
 			while (rs.next()) {
-				String name = rs.getString("name");
-				int price = rs.getInt("price");
-				
-				out.println("商品名: " + name + "<br/>");
-				out.println("価格: " + price + "<br/>");
+				String performer = rs.getString("performer");
+				Date update = rs.getDate("update");
+				int viewcount = rs.getInt("viewcount");
+				String chname = rs.getString("chname");
+				out.println("以下の動画を削除しました。<br/><br/>");
+				out.println("動画タイトル　：" + delete_mtitle + "<br/>");
+				out.println("出演者　　　　：" + performer + "<br/>");
+				out.println("投稿日　　　　：" + update + "<br/>");
+				out.println("視聴数　　　　：" + viewcount + "<br/>");
+				out.println("投稿チャンネル：" + chname + "<br/>");
 			}
 			rs.close();
 
-			stmt.executeUpdate("DELETE FROM products WHERE pid=" + deletePID);
+			stmt.executeUpdate("DELETE FROM movies WHERE mtitle ='" + delete_mtitle + "'");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,9 +110,6 @@ public class DeleteServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-
-		out.println("<br/>");
-		out.println("<a href=\"list\">トップページに戻る</a>");
 
 		out.println("</body>");
 		out.println("</html>");

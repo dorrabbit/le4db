@@ -65,6 +65,7 @@ public class AddServlet extends HttpServlet {
 		out.println("<ul class=\"uk-navbar-nav\">");
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
+		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -79,19 +80,23 @@ public class AddServlet extends HttpServlet {
 					+ ":5432/" + _dbname, _username, _password);
 			stmt = conn.createStatement();
 			
-			String target = (String)session.getAttribute("target");
-			
-			if(target == null) { //loginから来たとき
-				String new_uname = request.getParameter("new_uname");
-				String new_pass = request.getParameter("new_password");
-				stmt.executeUpdate("INSERT INTO login VALUES('" + new_uname + "', '" + new_pass + "')");
-				out.println("以下のユーザを追加しました。<br/><br/>");
-				out.println("ユーザ名　: " + new_uname + "<br/>");
-				out.println("パスワード: " + new_pass + "<br/>");
-				out.println("<br/>ログインページに戻り、ログインし直してください");
-			}else{
+			String target = (String)session.getAttribute("target_add");
+//			out.println(target);
+			if(target == null) {
+				out.println("不正な遷移元です");
+			}else {
+				out.println(target);
 				//loginページ以外から来たとき
 				switch(target) {
+				case "/auth/login":
+					 //loginから来たとき
+					String new_uname = request.getParameter("new_uname");
+					String new_pass = request.getParameter("new_password");
+					stmt.executeUpdate("INSERT INTO login VALUES('" + new_uname + "', '" + new_pass + "')");
+					out.println("以下のユーザを追加しました。<br/><br/>");
+					out.println("ユーザ名　: " + new_uname + "<br/>");
+					out.println("パスワード: " + new_pass + "<br/>");
+					out.println("<br/>ログインページに戻り、ログインし直してください");
 				case "/mlist":
 					String new_mtitle = request.getParameter("new_mtitle");
 					String new_performer = request.getParameter("new_performer");
@@ -114,14 +119,25 @@ public class AddServlet extends HttpServlet {
 					out.println("投稿チャンネル: " + new_chname + "<br/>");
 					
 					out.println("<br/>");
-					out.println("<a href=" + target + ">遷移元ページに戻る</a><br/>");
-					out.println("<a href=\"/auth/login\">ログインページに戻る</a><br/>");
-					out.println("<a href=\"/home\">トップページに戻る</a>");
-
-					out.println("</body>");
-					out.println("</html>");
+				case "/slist":
+					String new_sname = request.getParameter("new_sname");
+					String new_repperf = request.getParameter("new_repperf");
+					String new_contents = request.getParameter("new_contents");
+					stmt.executeUpdate("INSERT INTO series VALUES('" + new_sname + "', '" 
+															  		 + new_contents + "', '" 
+																	 + new_repperf + "')");
+					out.println("以下のシリーズを追加しました。<br/><br/>");
+					out.println("シリーズ名　　　： " + new_sname + "<br/>");
+					out.println("レギュラー出演者: " + new_repperf + "<br/>");
+					out.println("内容　　　　　　: " + new_contents + "<br/>");
+					
+					out.println("<br/>");
 				}
+				out.println("<a href=" + target + ">遷移元ページに戻る</a><br/>");	
 			}
+			out.println("</body>");
+			out.println("</html>");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

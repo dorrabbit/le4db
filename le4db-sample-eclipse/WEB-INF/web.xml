@@ -21,8 +21,18 @@
   </servlet>
 
   <servlet>
+    <servlet-name>SeriesAdd</servlet-name>
+    <servlet-class>SeriesAddServlet</servlet-class>
+  </servlet>
+
+  <servlet>
     <servlet-name>Item</servlet-name>
     <servlet-class>ItemServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>ItemSeries</servlet-name>
+    <servlet-class>ItemSeriesServlet</servlet-class>
   </servlet>
 
   <servlet>
@@ -64,6 +74,11 @@
   	<servlet-name>MovieList</servlet-name>
   	<servlet-class>MovieListServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>SeriesList</servlet-name>
+  	<servlet-class>SeriesListServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Home</servlet-name>
@@ -81,8 +96,18 @@
   </servlet-mapping>
 
   <servlet-mapping>
+    <servlet-name>SeriesAdd</servlet-name>
+    <url-pattern>/sadd</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
     <servlet-name>Item</servlet-name>
     <url-pattern>/item</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>ItemSeries</servlet-name>
+    <url-pattern>/sitem</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -117,7 +142,42 @@
   
   <filter-mapping>
   	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/slist</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/item</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/sitem</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/search</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
   	<url-pattern>/add</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/sadd</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/update</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/delete</url-pattern>
   </filter-mapping>
   
   <servlet-mapping>
@@ -128,6 +188,11 @@
   <servlet-mapping>
   	<servlet-name>MovieList</servlet-name>
   	<url-pattern>/mlist</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>SeriesList</servlet-name>
+  	<url-pattern>/slist</url-pattern>
   </servlet-mapping>
 
 </web-app>

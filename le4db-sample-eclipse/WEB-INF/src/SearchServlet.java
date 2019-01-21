@@ -53,7 +53,7 @@ public class SearchServlet extends HttpServlet {
 		out.println("<link rel=\"stylesheet\" href=\"/uikit.min.css\">");
 		out.println("<html>");
 	    out.println("<head>");
-	    out.println("<title>追加ページ</title>");
+	    out.println("<title>検索ページ</title>");
 	    out.println("</head>");
 		out.println("<body class=\"uk-background-muted uk-padding\">");
 		
@@ -70,20 +70,22 @@ public class SearchServlet extends HttpServlet {
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
 		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
+		out.println("<li><a href=\"/clist\">チャンネル</a></li>");
+		out.println("<li><a href=\"/vdlist\">視聴済み</a></li>");
+		out.println("<li><a href=\"/vilist\">未視聴</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
 		//
 		
-		out.println("<h3>検索結果</h3>");
-
 //		out.println(srch_mtitle + "," + srch_performer + "," + srch_contents);
 //		out.println(srch_performer.equals(""));
 		String query_mtitle;
 		String query_perf;
 		String query_con;
-		
-		out.println("検索に用いた語： <br/>");
+
+		out.println("<h3>検索条件</h3>");
+		out.println("検索に用いた語<br/>");
 		if (srch_mtitle.equals("")) {
 			query_mtitle = "true";
 		}else {
@@ -104,7 +106,9 @@ public class SearchServlet extends HttpServlet {
 							 + "select sname from series where contents like '%"
 							 + srch_contents + "%'))";
 		}
-		
+
+		out.println("<h3>検索結果</h3>");
+
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -118,7 +122,8 @@ public class SearchServlet extends HttpServlet {
 
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM movies WHERE "
-								 + query_mtitle + " and " + query_perf + " and " + query_con);
+								 + query_mtitle + " and " + query_perf + " and " + query_con
+								 + " ORDER BY update");
 			while (rs.next()) {
 				String mtitle = rs.getString("mtitle");
 				String performer = rs.getString("performer");
@@ -137,7 +142,18 @@ public class SearchServlet extends HttpServlet {
 			rs.close();
 
 			out.println("</table>");
-
+			
+			ResultSet rs_count = stmt
+					.executeQuery("SELECT COUNT(*), SUM(viewcount) FROM movies WHERE "
+								 + query_mtitle + " and " + query_perf + " and " + query_con);
+			while (rs_count.next()) {
+				int count = rs_count.getInt("count");
+				int sum = rs_count.getInt("sum");
+				out.println("検索結果　： " + count + "件<br/>");
+				out.println("平均視聴数： " + sum/count);
+			}
+			rs_count.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

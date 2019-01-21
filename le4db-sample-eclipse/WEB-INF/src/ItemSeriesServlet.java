@@ -67,6 +67,9 @@ public class ItemSeriesServlet extends HttpServlet {
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
 		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
+		out.println("<li><a href=\"/clist\">チャンネル</a></li>");
+		out.println("<li><a href=\"/vdlist\">視聴済み</a></li>");
+		out.println("<li><a href=\"/vilist\">未視聴</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -99,38 +102,47 @@ public class ItemSeriesServlet extends HttpServlet {
 				out.println("<td>" + att + "</td>");
 				out.println("</tr>");
 				out.println("</table>");
-				
-//				out.println("<h3>更新</h3>");
-//				out.println("<form action=\"update\" method=\"GET\">");
-//				out.println("動画タイトル　：" + mtitle);
-//				out.println("<input type=\"hidden\" name=\"update_mtitle\" value=\"" + mtitle + "\"/><br/>");
-//				out.println("出演者　　　　：");
-//				out.println("<input type=\"text\" name=\"update_performer\" value=\"" + performer + "\"/><br/>");
-//				out.println("投稿日　　　　：");
-//				out.println("<input type=\"text\" name=\"update_update\" value=\"" + update + "\"/><br/>");
-//				out.println("視聴数　　　　：");
-//				out.println("<input type=\"text\" name=\"update_viewcount\" value=\"" + viewcount + "\"/><br/>");
-//				out.println("投稿チャンネル：");
-//				out.println("<input type=\"text\" name=\"update_chname\" value=\"" + chname + "\"/><br/>");
 			}
 			rs.close();
-//			out.println("<input type=\"submit\" value=\"更新\"/>");
-//			out.println("</form>");
 			out.println("<h3>" + sname + "内動画一覧</h3>");
 			
 			out.println("<table border=\"1\">");
-			out.println("<tr><th>動画タイトル</th></tr>");
+			out.println("<tr><th>動画名</th><th>出演者</th><th>日付</th><th>視聴回数</th><th>チャンネル名</th></tr>");
 			
-			ResultSet rs_c = stmt.executeQuery("SELECT * FROM classification WHERE sname = '" + sname + "'");
+			ResultSet rs_class = stmt.executeQuery("SELECT * FROM movies WHERE mtitle IN ("
+											 + "SELECT mtitle FROM classification WHERE sname = '"
+											 + sname + "') ORDER BY update");
 
-			while (rs_c.next()) {
-				String mtitle = rs_c.getString("mtitle");
+			while (rs_class.next()) {
+				String mtitle = rs_class.getString("mtitle");
+				String performer = rs_class.getString("performer");
+				Date update = rs_class.getDate("update");
+				int viewcount = rs_class.getInt("viewcount");
+				String chname = rs_class.getString("chname");
+
 				out.println("<tr>");
-				out.println("<td><a href=\"item?mtitle=" + mtitle + "\">" + mtitle + "</a></td>");
+				out.println("<td><a href=\"item?mtitle=" + mtitle + "\">" + mtitle + "</td>");
+				out.println("<td>" + performer + "</td>");
+				out.println("<td>" + update + "</td>");
+				out.println("<td>" + viewcount + "</td>");
+				out.println("<td>" + chname + "</td>");
 				out.println("</tr>");
 			}
-			rs_c.close();
+			rs_class.close();
 			out.println("</table>");
+			
+			ResultSet rs_count = stmt.executeQuery("SELECT COUNT(*), SUM(viewcount) FROM movies WHERE mtitle IN ("
+					 							 + "SELECT mtitle FROM classification WHERE sname = '"
+					 							 + sname + "')");
+
+			while (rs_count.next()) {
+				int count = rs_count.getInt("count");
+				int sum = rs_count.getInt("sum");
+
+				out.println("動画件数　： " + count + "件<br/>");
+				out.println("平均視聴数： " + sum/count);
+			}
+			rs_count.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,7 +162,7 @@ public class ItemSeriesServlet extends HttpServlet {
 //		out.println("<input type=\"submit\" value=\"削除\"/>");
 //		out.println("</form>");
 
-		out.println("<h3>追加</h3>");
+		out.println("<h3>動画を追加</h3>");
 
 		out.println("<form action=\"/sadd\" method=\"GET\">");
 		out.println("シリーズ名　： " + sname);

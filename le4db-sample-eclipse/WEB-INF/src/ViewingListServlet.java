@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.*;
 import javax.servlet.http.*;
 @SuppressWarnings("serial")
-public class SeriesListServlet extends HttpServlet {
+public class ViewingListServlet extends HttpServlet {
 
 	private String _hostname = null;
 	private String _dbname = null;
@@ -50,7 +50,7 @@ public class SeriesListServlet extends HttpServlet {
 		out.println("<link rel=\"stylesheet\" href=\"/uikit.min.css\">");
 		out.println("<html>");
 	    out.println("<head>");
-	    out.println("<title>シリーズ一覧</title>");
+	    out.println("<title>未視聴一覧</title>");
 	    out.println("</head>");
 		out.println("<body class=\"uk-background-muted uk-padding\">");
 		
@@ -61,16 +61,16 @@ public class SeriesListServlet extends HttpServlet {
 		out.println(uname + "：ログインしています");
 		out.println("</br><a href=\"/auth/logout\">ログアウト</a>");
 		out.println("</div>");
-		session.setAttribute("target_add", "/slist");
+		session.setAttribute("target_add", "/clist");
 		out.println("<nav class=\"uk-navbar-container\" uk-navbar uk-sticky>");
 		out.println("<div>");
 		out.println("<ul class=\"uk-navbar-nav\">");
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
-		out.println("<li class=\"uk-active\"><a href=\"/slist\">シリーズ</a></li>");
+		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
 		out.println("<li><a href=\"/clist\">チャンネル</a></li>");
 		out.println("<li><a href=\"/vdlist\">視聴済み</a></li>");
-		out.println("<li><a href=\"/vilist\">未視聴</a></li>");
+		out.println("<li class=\"uk-active\"><a href=\"/vilist\">未視聴</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -84,20 +84,23 @@ public class SeriesListServlet extends HttpServlet {
 			stmt = conn.createStatement();
 
 			out.println("<table border=\"1\">");
-			out.println("<tr><th>シリーズ名</th><th>レギュラー出演者</th><th>内容</th><th>ジャンル</th></tr>");
+			out.println("<tr><th>動画名</th><th>出演者</th><th>日付</th><th>視聴回数</th><th>チャンネル名</th></tr>");
 
-			ResultSet rs = stmt.executeQuery("select * from series natural left join genre order by att");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE mtitle IN (SELECT mtitle FROM movies EXCEPT " +
+										     "SELECT mtitle FROM viewing WHERE uname = '" + uname + "') ORDER BY update");
 			while (rs.next()) {
-				String sname = rs.getString("sname");
-				String repperf = rs.getString("repperf");
-				String contents = rs.getString("contents");
-				String att = rs.getString("att");
+				String mtitle = rs.getString("mtitle");
+				String performer = rs.getString("performer");
+				Date update = rs.getDate("update");
+				int viewcount = rs.getInt("viewcount");
+				String chname = rs.getString("chname");
 
 				out.println("<tr>");
-				out.println("<td><a href=\"sitem?sname=" + sname + "\">" + sname + "</td>");
-				out.println("<td>" + repperf + "</td>");
-				out.println("<td>" + contents + "</td>");
-				out.println("<td>" + att + "</td>");
+				out.println("<td><a href=\"item?mtitle=" + mtitle + "\">" + mtitle + "</td>");
+				out.println("<td>" + performer + "</td>");
+				out.println("<td>" + update + "</td>");
+				out.println("<td>" + viewcount + "</td>");
+				out.println("<td>" + chname + "</td>");
 				out.println("</tr>");
 			}
 			rs.close();
@@ -116,22 +119,19 @@ public class SeriesListServlet extends HttpServlet {
 			}
 		}
 
-		out.println("<h3>追加</h3>");
-
-		out.println("<form action=\"/add\" method=\"GET\">");
-		out.println("シリーズ名　　　： ");
-		out.println("<input type=\"text\" name=\"new_sname\"/>");
-		out.println("<br/>");
-		out.println("レギュラー出演者： ");
-		out.println("<input type=\"text\" name=\"new_repperf\"/>");
-		out.println("<br/>");
-		out.println("内容　　　　　　： ");
-		out.println("<input type=\"text\" name=\"new_contents\"/>");
-		out.println("<br/>");
-		out.println("<br/>");
-		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"submit\" value=\"登録 \">");
-		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"reset\" value=\"リセット\">");
-		out.println("</form>");
+//		out.println("<h3>追加</h3>");
+//
+//		out.println("<form action=\"/add\" method=\"GET\">");
+//		out.println("チャンネル名　　　： ");
+//		out.println("<input type=\"text\" name=\"new_chname\"/>");
+//		out.println("<br/>");
+//		out.println("チャンネル登録者数： ");
+//		out.println("<input type=\"text\" name=\"new_viewernum\"/>");
+//		out.println("<br/>");
+//		out.println("<br/>");
+//		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"submit\" value=\"登録 \">");
+//		out.println("<input class=\"uk-button uk-button-default uk-card uk-card-default uk-card-hover\" type=\"reset\" value=\"リセット\">");
+//		out.println("</form>");
 		
 		out.println("</body>");
 		out.println("</html>");

@@ -26,6 +26,11 @@
   </servlet>
 
   <servlet>
+    <servlet-name>ViewedAdd</servlet-name>
+    <servlet-class>ViewedAddServlet</servlet-class>
+  </servlet>
+
+  <servlet>
     <servlet-name>Item</servlet-name>
     <servlet-class>ItemServlet</servlet-class>
   </servlet>
@@ -79,6 +84,21 @@
   	<servlet-name>SeriesList</servlet-name>
   	<servlet-class>SeriesListServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+  	<servlet-name>ChannelList</servlet-name>
+  	<servlet-class>ChannelListServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>ViewedList</servlet-name>
+  	<servlet-class>ViewedListServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>ViewingList</servlet-name>
+  	<servlet-class>ViewingListServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Home</servlet-name>
@@ -98,6 +118,11 @@
   <servlet-mapping>
     <servlet-name>SeriesAdd</servlet-name>
     <url-pattern>/sadd</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>ViewedAdd</servlet-name>
+    <url-pattern>/vdadd</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -147,6 +172,21 @@
   
   <filter-mapping>
   	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/clist</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/vdlist</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/vilist</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
   	<url-pattern>/item</url-pattern>
   </filter-mapping>
   
@@ -172,6 +212,11 @@
   
   <filter-mapping>
   	<filter-name>AuthFilter</filter-name>
+  	<url-pattern>/vdadd</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+  	<filter-name>AuthFilter</filter-name>
   	<url-pattern>/update</url-pattern>
   </filter-mapping>
   
@@ -193,6 +238,21 @@
   <servlet-mapping>
   	<servlet-name>SeriesList</servlet-name>
   	<url-pattern>/slist</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>ChannelList</servlet-name>
+  	<url-pattern>/clist</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>ViewedList</servlet-name>
+  	<url-pattern>/vdlist</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>ViewingList</servlet-name>
+  	<url-pattern>/vilist</url-pattern>
   </servlet-mapping>
 
 </web-app>

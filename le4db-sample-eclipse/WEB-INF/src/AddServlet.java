@@ -66,6 +66,9 @@ public class AddServlet extends HttpServlet {
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li><a href=\"/mlist\">動画</a></li>");
 		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
+		out.println("<li><a href=\"/clist\">チャンネル</a></li>");
+		out.println("<li><a href=\"/vdlist\">視聴済み</a></li>");
+		out.println("<li><a href=\"/vilist\">未視聴</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -85,8 +88,6 @@ public class AddServlet extends HttpServlet {
 			if(target == null) {
 				out.println("不正な遷移元です");
 			}else {
-				out.println(target);
-				//loginページ以外から来たとき
 				switch(target) {
 				case "/auth/login":
 					 //loginから来たとき
@@ -128,8 +129,18 @@ public class AddServlet extends HttpServlet {
 																	 + new_repperf + "')");
 					out.println("以下のシリーズを追加しました。<br/><br/>");
 					out.println("シリーズ名　　　： " + new_sname + "<br/>");
-					out.println("レギュラー出演者: " + new_repperf + "<br/>");
-					out.println("内容　　　　　　: " + new_contents + "<br/>");
+					out.println("レギュラー出演者： " + new_repperf + "<br/>");
+					out.println("内容　　　　　　： " + new_contents + "<br/>");
+					
+					out.println("<br/>");
+				case "/clist":
+					String new_chname_c = request.getParameter("new_chname");
+					String new_viewernum = request.getParameter("new_viewernum");
+					stmt.executeUpdate("INSERT INTO channel VALUES('" + new_chname_c + "', " 
+															   		  + new_viewernum + ")");
+					out.println("以下のシリーズを追加しました。<br/><br/>");
+					out.println("チャンネル名　　　： " + new_chname_c + "<br/>");
+					out.println("チャンネル登録者数： " + new_viewernum + "<br/>");
 					
 					out.println("<br/>");
 				}

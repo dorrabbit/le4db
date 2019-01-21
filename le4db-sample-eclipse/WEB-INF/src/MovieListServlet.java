@@ -68,6 +68,9 @@ public class MovieListServlet extends HttpServlet {
 		out.println("<li><a href=\"/index.html\">ホーム</a></li>");
 		out.println("<li class=\"uk-active\"><a href=\"/mlist\">動画</a></li>");
 		out.println("<li><a href=\"/slist\">シリーズ</a></li>");
+		out.println("<li><a href=\"/clist\">チャンネル</a></li>");
+		out.println("<li><a href=\"/vdlist\">視聴済み</a></li>");
+		out.println("<li><a href=\"/vilist\">未視聴</a></li>");
 		out.println("</ul>");
 		out.println("</div>");
 		out.println("</nav>");
@@ -83,7 +86,7 @@ public class MovieListServlet extends HttpServlet {
 			out.println("<table border=\"1\">");
 			out.println("<tr><th>動画名</th><th>出演者</th><th>日付</th><th>視聴回数</th><th>チャンネル名</th></tr>");
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM movies");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM movies ORDER BY update");
 			while (rs.next()) {
 				String mtitle = rs.getString("mtitle");
 				String performer = rs.getString("performer");

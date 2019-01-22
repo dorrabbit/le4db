@@ -86,7 +86,7 @@ public class ViewingListServlet extends HttpServlet {
 			out.println("<table border=\"1\">");
 			out.println("<tr><th>動画名</th><th>出演者</th><th>日付</th><th>視聴回数</th><th>チャンネル名</th></tr>");
 
-			ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE mtitle IN (SELECT mtitle FROM movies EXCEPT " +
+			ResultSet rs = stmt.executeQuery("SELECT * FROM movies WHERE NOT mtitle IN (" +
 										     "SELECT mtitle FROM viewing WHERE uname = '" + uname + "') ORDER BY update");
 			while (rs.next()) {
 				String mtitle = rs.getString("mtitle");

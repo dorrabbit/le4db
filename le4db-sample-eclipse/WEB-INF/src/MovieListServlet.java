@@ -224,6 +224,11 @@ public class MovieListServlet extends HttpServlet {
 		out.println("<h3>検索</h3>");
 
 		out.println("<form action=\"/search\" method=\"GET\">");
+		out.println("<div class=\"uk-margin uk-grid-small uk-child-width-auto uk-grid\">" + 
+					"    <label><input class=\"uk-radio\" type=\"radio\" name=\"inradio\" value=\"inall\" checked>全動画</label>" + 
+					"    <label><input class=\"uk-radio\" type=\"radio\" name=\"inradio\" value=\"invd\">視聴済み動画</label>" + 
+					"    <label><input class=\"uk-radio\" type=\"radio\" name=\"inradio\" value=\"invi\">未視聴動画</label>" + 
+					"</div>");
 		out.println("動画タイトル： ");
 		out.println("<input type=\"text\" name=\"srch_mtitle\"/>" + "を含む");
 		out.println("<br/>");

@@ -43,10 +43,6 @@ public class SearchServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		String srch_mtitle = request.getParameter("srch_mtitle");
-		String srch_performer = request.getParameter("srch_performer");
-		String srch_contents = request.getParameter("srch_contents");
-
 		//テンプレ
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
@@ -77,36 +73,52 @@ public class SearchServlet extends HttpServlet {
 		out.println("</div>");
 		out.println("</nav>");
 		//
+
+		String srch_mtitle = request.getParameter("srch_mtitle");
+		String srch_performer = request.getParameter("srch_performer");
+		String srch_contents = request.getParameter("srch_contents");
+		String srch_inradio = request.getParameter("inradio");
 		
 //		out.println(srch_mtitle + "," + srch_performer + "," + srch_contents);
 //		out.println(srch_performer.equals(""));
 		String query_mtitle;
 		String query_perf;
 		String query_con;
+		String query_inradio;
 
 		out.println("<h3>検索条件</h3>");
+		if (srch_inradio.equals("inall")) {
+			out.println("全動画内検索<br/>");
+			query_inradio = "true";
+		}else if(srch_inradio.equals("invd")) {
+			out.println("視聴済み動画内検索<br/>");
+			query_inradio = "mtitle in (select mtitle from viewing where uname ='" + uname + "')";
+		}else /*srch_radio=invi*/{
+			out.println("未視聴動画内検索<br/>");
+			query_inradio = "not mtitle in (select mtitle from viewing where uname ='" + uname + "')";
+		}
 		out.println("検索に用いた語<br/>");
 		if (srch_mtitle.equals("")) {
 			query_mtitle = "true";
 		}else {
-			out.println("動画タイトル： " + srch_mtitle + "を含む<br/>");
+			out.println("　動画タイトル： " + srch_mtitle + "を含む<br/>");
 			query_mtitle = "mtitle like '%" + srch_mtitle + "%'";
 		}
 		if (srch_performer.equals("")) {
 			query_perf = "true";
 		}else {
-			out.println("出演者　　　： " + srch_performer + "を含む<br/>");
+			out.println("　出演者　　　： " + srch_performer + "を含む<br/>");
 			query_perf = "performer like '%" + srch_performer + "%'";
 		}
 		if (srch_contents.equals("")) {
 			query_con = "true";
 		}else {
-			out.println("内容　　　　： " + srch_contents + "を含む<br/>");
+			out.println("　内容　　　　： " + srch_contents + "を含む<br/>");
 			query_con = "mtitle in ( select mtitle from classification where sname in ("
 							 + "select sname from series where contents like '%"
 							 + srch_contents + "%'))";
 		}
-
+		
 		out.println("<h3>検索結果</h3>");
 
 		Connection conn = null;
@@ -122,7 +134,7 @@ public class SearchServlet extends HttpServlet {
 
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM movies WHERE "
-								 + query_mtitle + " and " + query_perf + " and " + query_con
+								 + query_mtitle + " and " + query_perf + " and " + query_con + " and " + query_inradio
 								 + " ORDER BY update");
 			while (rs.next()) {
 				String mtitle = rs.getString("mtitle");
@@ -145,7 +157,7 @@ public class SearchServlet extends HttpServlet {
 			
 			ResultSet rs_count = stmt
 					.executeQuery("SELECT COUNT(*), SUM(viewcount) FROM movies WHERE "
-								 + query_mtitle + " and " + query_perf + " and " + query_con);
+								 + query_mtitle + " and " + query_perf + " and " + query_con + " and " + query_inradio);
 			while (rs_count.next()) {
 				int count = rs_count.getInt("count");
 				int sum = rs_count.getInt("sum");

@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 
 	out.println("<h3>アカウント作成</h3>");
 
-	out.println("<form action=\"/add\" method=\"GET\">");
+	out.println("<form action=\"/ladd\" method=\"GET\">");
 	out.println("ユーザ名　： ");
 	out.println("<input type=\"text\" name=\"new_uname\"/>");
 	out.println("<br/>");

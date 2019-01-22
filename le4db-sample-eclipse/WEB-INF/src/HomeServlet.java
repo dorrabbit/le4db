@@ -59,7 +59,10 @@ public class HomeServlet extends HttpServlet {
 		out.println("</nav>");
 		//ここまでテンプレ（title変更・liのactiveの変更・ログインしていませんのif必要なし）
 		
-		
+		out.println("<h3>理念</h3>");
+		out.println("動画管理システムは、別チャンネルから投稿された同シリーズ動画を１シリーズに纏めます。<br/>"
+				  + "また動画の視聴・未視聴を管理することも可能です。<br/>"
+				  + "見たかどうか忘れて動画を再生した、赤いプログレスバーが少しだけ進んだ閲覧履歴から解放されよう。");
 		out.println("</body>");
 		out.println("</html>");
 	}

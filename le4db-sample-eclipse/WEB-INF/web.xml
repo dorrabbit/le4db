@@ -19,6 +19,10 @@
     <servlet-name>Add</servlet-name>
     <servlet-class>AddServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>LoginAdd</servlet-name>
+    <servlet-class>LoginAddServlet</servlet-class>
+  </servlet>
 
   <servlet>
     <servlet-name>SeriesAdd</servlet-name>
@@ -113,6 +117,11 @@
   <servlet-mapping>
     <servlet-name>Add</servlet-name>
     <url-pattern>/add</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>LoginAdd</servlet-name>
+    <url-pattern>/ladd</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

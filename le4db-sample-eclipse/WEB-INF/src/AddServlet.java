@@ -89,15 +89,6 @@ public class AddServlet extends HttpServlet {
 				out.println("不正な遷移元です");
 			}else {
 				switch(target) {
-				case "/auth/login":
-					 //loginから来たとき
-					String new_uname = request.getParameter("new_uname");
-					String new_pass = request.getParameter("new_password");
-					stmt.executeUpdate("INSERT INTO login VALUES('" + new_uname + "', '" + new_pass + "')");
-					out.println("以下のユーザを追加しました。<br/><br/>");
-					out.println("ユーザ名　: " + new_uname + "<br/>");
-					out.println("パスワード: " + new_pass + "<br/>");
-					out.println("<br/>ログインページに戻り、ログインし直してください");
 				case "/mlist":
 					String new_mtitle = request.getParameter("new_mtitle");
 					String new_performer = request.getParameter("new_performer");

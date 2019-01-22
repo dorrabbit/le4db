@@ -101,6 +101,7 @@ public class DeleteServlet extends HttpServlet {
 			}
 			rs.close();
 
+			stmt.executeUpdate("DELETE FROM viewing WHERE mtitle ='" + delete_mtitle + "'");
 			stmt.executeUpdate("DELETE FROM classification WHERE mtitle ='" + delete_mtitle + "'");
 			stmt.executeUpdate("DELETE FROM movies WHERE mtitle ='" + delete_mtitle + "'");
 			
